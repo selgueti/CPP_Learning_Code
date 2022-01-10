@@ -1,13 +1,33 @@
 #include <iostream>
+#include <string>
+#include <vector>
 
-int main()
+int main(int argc, char** argv)
 {
-    int array[] = { 0, 1, 2, 3 };
-
-    for (int i = 0; i < 4; ++i)
+    using namespace std;
+    int length = 0;
+    if (argc < 2)
     {
-        std::cout << array[i] << std::endl;
+        cerr << "Expected argument for array size." << endl;
+        return -1;
     }
-
+    else
+    {
+        length = stoi(argv[1]);
+        if (length < 0)
+        {
+            cout << "array length must be > 0" << endl;
+            return -1;
+        }
+    }
+    vector<int> array;
+    for (int i = 0; i < length; i++)
+    {
+        array.emplace_back(i + 1);
+    }
+    for (int value : array)
+    {
+        cout << value << endl;
+    }
     return 0;
 }
