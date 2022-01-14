@@ -17,13 +17,20 @@ désavantages:
 
 1. Quelle est la différence entre une erreur de compilation et une erreur d'exécution ? (à quel moment se produisent-elles ? dans quelles circonstances ? comment les identifier ? comment les corriger ? ...)
 ```
-Une erreur de compilation est une erreur syntaxique ou sémantique, elle ce produit durant la phase de compilation, par exemple un ";" oublié, ou un probème de type, le message d'erreur du compilateur nous aide à les corriger.
-Une erreur d'exécution se produit pendant l'exécution du programme lorsqu'il se comporte pas de la façon attendue, par exemple un fichier que l'on doit ouvrir mais qui n'existe pas, elles sont très difficile à debugger.
+Une erreur de compilation est une erreur syntaxique ou sémantique, elle ce produit 
+durant la phase de compilation, par exemple un ";" oublié, ou un probème de type, 
+le message d'erreur du compilateur nous aide à les corriger.
+
+Une erreur d'exécution se produit pendant l'exécution du programme lorsqu'il se 
+comporte pas de la façon attendue, par exemple un fichier que l'on doit ouvrir 
+mais qui n'existe pas ou une division par 0, elles sont très difficile à debugger.
 ```
 
 2. Que signifie en pratique l'expression "*undefined behavior*" (UB) ? Peut-on compiler un programme contenant du code classifié UB par le standard ? Si oui, que peut-il se produire au moment de son exécution ?
 ```
-L'expression "*undefined behavior*" signifie que le comportement du code n'est pas spécfié par le standart c++. Il peut se produire une exécution différente en fonction du context, de l'architecture...etc. Un tel programme est néamoins compilable.
+L'expression "*undefined behavior*" signifie que le comportement du code n'est pas spécfié par le standart c++.
+Il peut se produire une exécution différente en fonction du context, de l'architecture...etc.
+Un tel programme est néamoins compilable.
 ```
 
 ## Exercice 2 - Primitives et initialisation
@@ -66,7 +73,9 @@ const double d13{.0f};
 
 int        i14 = i1;
 int&       i15 = i1; // si i15 est une référence sur i1 alors i15 doit être de type const int&
-int&       i16 = b2; // doit être de type const int& car un objet de type int est crée pour boxé b2 en int pour faire une référence dessus
+int&       i16 = b2; // doit être de type const int& car un objet de type 
+// int est crée pour boxé b2 en int pour faire une référence dessus
+
 const int& i17{i14};
 ```
 
@@ -111,9 +120,14 @@ int main() {
 Quelles sont les différences entre ces différentes méthodes de passage ?
 Dans quels contextes est-il préférable de passer par valeur ? Par référence ? Et par référence constante ?
 ```
-passage par valeur : tous les champs des objets passé en paramètre sont empilé sur la pile d'appel. On l'utilise uniquement pour les types primitifs car très couteux pour les objets.
-passage par référence:  la référence de l'objets est empilé et on peut accédé/modifié l'objet depuis sa référence. On l'utilise lorsque l'on veux pouvoir modifier des objets.
-passage par référence constante :  la référence de l'objets est empilé mais l'accès en mémoire est en read-only. On l'utilise lorsque l'on a besoin de la valeur d'un objet que l'on ne souhaite pas modifier.
+passage par valeur : tous les champs des objets passé en paramètre sont empilé sur la pile d'appel. 
+On l'utilise uniquement pour les types primitifs car très couteux pour les objets.
+
+passage par référence:  la référence de l'objets est empilé et on peut accédé/modifié l'objet depuis sa référence. 
+On l'utilise lorsque l'on veux pouvoir modifier des objets.
+
+passage par référence constante :  la référence de l'objets est empilé mais l'accès en mémoire est en read-only. 
+On l'utilise lorsque l'on a besoin de la valeur d'un objet que l'on ne souhaite pas modifier.
 ```
 
 3. Modifiez les signatures des fonctions suivantes de manière à ce que le passage de paramètres soit le plus efficace et sécurisé possible.
