@@ -4,9 +4,27 @@
 ## Exercice 1 - Compilation et exécution
 
 1. Quels sont les avantages et désavantages d'un langage dit "*compilé*" (C, C++, Pascal) ou "*semi-compilé*" (Java) comparé à un langage dit "*interpreté*" (Python, PHP, Javascript, etc) ?
-2. Quelle est la différence entre une erreur de compilation et une erreur d'exécution ? (à quel moment se produisent-elles ? dans quelles circonstances ? comment les identifier ? comment les corriger ? ...)
-3. Que signifie en pratique l'expression "*undefined behavior*" (UB) ? Peut-on compiler un programme contenant du code classifié UB par le standard ? Si oui, que peut-il se produire au moment de son exécution ?
+```
+avantage:
+ + plus efficace (traduit en langage machine)
 
+désavantages: 
+ - il faut recompilé pour chaque plateforme 
+ - il faut recompilé si les dépendances changent
+
+ +/- gestion de la mémoire plus présente
+```
+
+1. Quelle est la différence entre une erreur de compilation et une erreur d'exécution ? (à quel moment se produisent-elles ? dans quelles circonstances ? comment les identifier ? comment les corriger ? ...)
+```
+Une erreur de compilation est une erreur syntaxique ou sémantique, elle ce produit durant la phase de compilation, par exemple un ";" oublié, ou un probème de type, le message d'erreur du compilateur nous aide à les corriger.
+Une erreur d'exécution se produit pendant l'exécution du programme lorsqu'il se comporte pas de la façon attendue, par exemple un fichier que l'on doit ouvrir mais qui n'existe pas, elles sont très difficile à debugger.
+```
+
+2. Que signifie en pratique l'expression "*undefined behavior*" (UB) ? Peut-on compiler un programme contenant du code classifié UB par le standard ? Si oui, que peut-il se produire au moment de son exécution ?
+```
+L'expression "*undefined behavior*" signifie que le comportement du code n'est pas spécfié par le standart c++. Il peut se produire une exécution différente en fonction du context, de l'architecture...etc. Un tel programme est néamoins compilable.
+```
 
 ## Exercice 2 - Primitives et initialisation
 
@@ -26,33 +44,37 @@ Vous pouvez utiliser [CompilerExplorer](https://www.godbolt.org/z/rPPoro) pour t
 
 ```cpp
 short       s0;
-const short s1;
+const short s1; // constante non initialisé
 
 const int i1 = 2;
 
 bool b2{false};
-bool b3{i1};
+bool b3{i1}; // int(4 octets) -> bool (1bit) 
 bool b4;
 
 unsigned       u5{0x10};
 unsigned short us6 = -10;
 unsigned long  ul7{b3 + u5 + us6};
 
-char c8{"a"};
+char c8{"a"}; // " délimite une string, il faut utilisé ' pour char
 char c9 = -10;
 
 double       d10{i1};
 double&      d11{d10};
-double&      d12;
+double&      d12; // une référence doit être initialisé
 const double d13{.0f};
 
 int        i14 = i1;
-int&       i15 = i1;
-int&       i16 = b2;
+int&       i15 = i1; // si i15 est une référence sur i1 alors i15 doit être de type const int&
+int&       i16 = b2; // doit être de type const int& car un objet de type int est crée pour boxé b2 en int pour faire une référence dessus
 const int& i17{i14};
 ```
 
 2. Pouvez-vous donner la valeur de `s0` ? De `ul7` ?
+```
+les valeurs de s0 et ul7 sont considéré comme undefined behavor : 
+s0 n'est pas initialisé et ul7 comporte us6 qui est unsigned short de valeur -10 < 0.
+```
 
 
 ## Exercice 3 - Les fonctions et leurs paramètres
@@ -62,15 +84,15 @@ const int& i17{i14};
 ```cpp
 #include <iostream>
 
-XX add(XX a, XX b) {
+int add(const int a, const int b) {
   return a + b;
 }
 
-XX add_to(XX a, XX b) {
+void add_to(int& a, const int b) {
   a += b;
 }
 
-XX another_add_to(XX a, XX b) {
+void another_add_to(int* a, const int b) {
   *a += b;
 }
 
@@ -88,17 +110,22 @@ int main() {
 2. En C++, vous pouvez passer vos paramètres par valeur, par référence et par référence constante.
 Quelles sont les différences entre ces différentes méthodes de passage ?
 Dans quels contextes est-il préférable de passer par valeur ? Par référence ? Et par référence constante ?
+```
+passage par valeur : tous les champs des objets passé en paramètre sont empilé sur la pile d'appel. On l'utilise uniquement pour les types primitifs car très couteux pour les objets.
+passage par référence:  la référence de l'objets est empilé et on peut accédé/modifié l'objet depuis sa référence. On l'utilise lorsque l'on veux pouvoir modifier des objets.
+passage par référence constante :  la référence de l'objets est empilé mais l'accès en mémoire est en read-only. On l'utilise lorsque l'on a besoin de la valeur d'un objet que l'on ne souhaite pas modifier.
+```
 
 3. Modifiez les signatures des fonctions suivantes de manière à ce que le passage de paramètres soit le plus efficace et sécurisé possible.
 Vous pouvez vous aidez des commentaires pour comprendre comment les fonctions utilisent leurs paramètres.
 ```cpp
 // Return the number of occurrences of 'a' found in string 's'.
-int count_a_occurrences(std::string s);
+int count_a_occurrences(const std::string& s);
 
 // Update function of a rendering program.
 // - dt (delta time) is read by the function to know the time elapsed since the last frame.
 // - errors is a string filled by the function to indicate what errors have occured.
-void update_loop(const float& dt, std::string& errors_out);
+void update_loop(const float dt, std::string& errors_out);
 
 // Return whether all numbers in 'values' are positive.
 // If there are negative values in it, fill the array 'negative_indices_out' with the indices
@@ -107,11 +134,11 @@ void update_loop(const float& dt, std::string& errors_out);
 //    -> res is false, since not all values are positive
 //    -> negative_indices contains { 1, 3 } because values[1] = -2 and values[3] = -4
 //    -> negative_count is 2
-bool are_all_positives(std::vector<int> values, int negative_indices_out[], size_t& negative_count_out);
+bool are_all_positives(const std::vector<int>& values, const int* negative_indices_out, size_t& negative_count_out);
 
 // Concatenate 'str1' and 'str2' and return the result.
 // The input parameters are not modified by the function.
-std::string concatenate(char str1[], char str2[]);
+std::string concatenate(const char* str1, const char* str2);
 ```
 
 
