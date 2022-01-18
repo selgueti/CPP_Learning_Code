@@ -32,8 +32,14 @@ int main() {
   return 0;
 }
 ```
+```
+réponse : Ce programme affiche 17 puis 17.
+```
 
 2. Que se passe si on enlève la ligne marquée "initialisation" ?
+```
+réponse : si on enlève la ligne, la variable global_sum est déclaré mais pas définie.
+```
 
 ## Exercice 2 - Construction et destruction
 
