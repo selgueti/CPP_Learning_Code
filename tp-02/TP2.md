@@ -61,14 +61,34 @@ private:
 Attention, pour l'initialisation de `_count`, vous essayerez d'utiliser un in-class initializer.\
 Pourquoi n'est-il pas possible d'initialiser avec `= { 26, 0 }` ? Que devez-vous écrire à la place ?
 
+```
+réponse : sil n'est pas possible d'initialiser avec `= { 26, 0 }` car il y a une ambiguité entre le constructeur et
+la `list-initializer`.
+On doit écrire 
+std::vector<unsigned int> _count = std::vector<unsigned int>(26, 0);
+```
+
 2. Ajoutez un constructeur de copie à votre classe et placez-y des instructions d'affichage (`std::cout`).\
 Si votre programme ne compile plus, expliquez pourquoi et résolvez le problème.
+
+```
+réponse : Le programme ne compile plus car comme on a déclaré un constructeur, il faut redéfinir le constructeur par défaut,
+que l'on appelle dans le main.
+```
 
 3. Dans le code suivant, selon vous, combien de fois le constructeur de copie sera appelé ?\
 Exécutez le code pour vérifier votre théorie. Recherchez ensuite sur Internet le concept de `copy-elision`.
 ```cpp
 Histogram h1, h2;
 Histogram h3 { Histogram { h1 } };
+```
+
+```
+réponse : Selon moi le constructeur par copie sera appelé 2 fois.
+Finalement on observe qu'il n'est appelé qu'une fois :
+Copy elision : Omits copy and move (since C++11) constructors, resulting in zero-copy pass-by-value semantics.
+Comme le résultat du premier appelle au constructeur n'est pas stocké et est directement utilisé pour créer h3,
+cela est optimisé en : Histogram h3 { h1 };
 ```
 
 ## Exercice 3 - Rappels d'événements !

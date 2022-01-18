@@ -3,47 +3,19 @@
 #include <iostream>
 #include <stdlib.h>
 
-// constructeur
 Histogram::Histogram()
-{
-    std::cout << "Constructeur par défaut" << std::endl;
-    _count = (unsigned int*)malloc(_size * sizeof(unsigned int));
-    reset();
-}
+{}
 
-// constructeur de copie
-Histogram::Histogram(const Histogram& other)
-    : Histogram()
+Histogram::Histogram(const Histogram& histogram)
+    : _count { histogram._count }
 {
-    std::cout << "Constructeur par copie" << std::endl;
-    for (size_t i = 0; i < _size; i++)
-    {
-        _count[i] = other._count[i];
-    }
-}
-
-// destructeur
-Histogram::~Histogram()
-{
-    std::cout << "Déstructeur" << std::endl;
-    free(_count);
-}
-
-// opérateur d'assignation par copie
-Histogram& Histogram::operator=(const Histogram& other)
-{
-    std::cout << "opérateur d'assignation par copie" << std::endl;
-    if (this != &other)
-    {
-        _count = other._count;
-    }
-    return *this;
+    std::cout << "Constructeur par copy" << std::endl;
 }
 
 // analyse la string passée en paramètre
 void Histogram::analyze(const std::string& s)
 {
-    for (const auto c : s)
+    for (auto c : s)
     {
         if (std::islower(c))
         {
@@ -56,7 +28,7 @@ void Histogram::analyze(const std::string& s)
 void Histogram::print() const
 {
     char c = 'a';
-    for (auto i = 0u; i < _size; i++)
+    for (auto i = 0u; i < _count.size(); i++)
     {
         if (_count[i] > 0)
         {
@@ -65,15 +37,6 @@ void Histogram::print() const
         c++;
     }
     std::cout << "------" << std::endl;
-}
-
-// remet le tableau à 0
-void Histogram::reset()
-{
-    for (size_t i = 0; i < _size; i++)
-    {
-        _count[i] = 0;
-    }
 }
 
 int main(void)
@@ -86,7 +49,6 @@ int main(void)
     {
         h1.analyze(s);
         h1.print();
-        h1.reset();
         std::cin >> s;
     }
 

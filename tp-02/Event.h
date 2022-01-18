@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <utility>
 
@@ -13,6 +14,20 @@ public:
         : _notif_time { notif_time }
         , _message { message }
     {}
+
+    Event() {}
+
+    bool notify_time(int current_min, int current_sec)
+    {
+        if ((current_min - _notif_time.first) == 0 && (current_sec - _notif_time.second) == 0)
+        {
+            std::cout << _message << std::endl;
+            return true;
+        }
+        return false;
+    }
+
+    Time get_notif_time() const { return _notif_time; }
 
 private:
     Time        _notif_time;
