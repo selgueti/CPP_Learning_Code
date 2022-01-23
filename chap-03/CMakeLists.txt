@@ -19,3 +19,7 @@ add_executable(c3-4-inplace
 add_executable(c3-5-move
     4-move/Move.cpp
 )
+
+add_executable(c3-6-questionaire
+    5-questionnaire/Main.cpp
+)
