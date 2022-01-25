@@ -35,6 +35,15 @@ public:
         _pc.receive(std::move(pokemon));
     }
 
+    void store_in_pc(int index)
+    {
+        if ((index >= 0) && ((_nb_pokeballs - index) > 0) && (!_pokeballs[index].empty()))
+        {
+            _pc.receive(std::make_unique<Pokemon>(_pokeballs[index].pokemon()));
+            _pokeballs[index].free();
+        }
+    }
+
 private:
     const std::string     _name;
     PC&                   _pc;
