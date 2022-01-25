@@ -13,7 +13,7 @@ void PC::give_back(Trainer& trainer, const std::string& pokemon_name)
         {
             trainer.capture(std::move(_pokemons[i]));
             _pokemons[i] = std::move(_pokemons[_pokemons.size() - 1]);
-            _pokemons.resize(_pokemons.size() - 1);
+            _pokemons.pop_back();
             return;
         }
     }
