@@ -10,7 +10,7 @@ public:
         : _name { name }
     {}
 
-    const std::string& name() { return _name; }
+    const std::string& name() const { return _name; }
 
 private:
     const std::string _name;

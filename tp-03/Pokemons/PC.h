@@ -11,6 +11,8 @@ class PC
 public:
     std::vector<std::unique_ptr<Pokemon>>& pokemons() { return _pokemons; }
 
+    void receive(std::unique_ptr<Pokemon> ptr) { _pokemons.emplace_back(std::move(ptr)); }
+
 private:
     std::vector<std::unique_ptr<Pokemon>> _pokemons;
 };
