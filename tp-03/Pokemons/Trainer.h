@@ -4,8 +4,8 @@
 #include "Pokeball.h"
 #include "Pokemon.h"
 
-#include <iostream>
 #include <string>
+#include <vector>
 // A person that capture Pokemons and make them fight.
 class Trainer
 {
@@ -14,7 +14,7 @@ public:
         : _name { name }
         , _pc { pc }
     {
-        _pokeballs.resize(_nb_pokebbals);
+        _pokeballs.resize(_nb_pokeballs);
     }
 
     const std::string name() const { return _name; }
@@ -23,7 +23,8 @@ public:
 
     void capture(std::unique_ptr<Pokemon> pokemon)
     {
-        for (auto i = 0u; i < _nb_pokebbals; i++)
+        (*pokemon).set_trainer(this);
+        for (auto i = 0u; i < _nb_pokeballs; i++)
         {
             if (_pokeballs[i].empty())
             {
@@ -38,5 +39,5 @@ private:
     const std::string     _name;
     PC&                   _pc;
     std::vector<Pokeball> _pokeballs;
-    const unsigned int    _nb_pokebbals = 6;
+    const unsigned int    _nb_pokeballs = 6;
 };
