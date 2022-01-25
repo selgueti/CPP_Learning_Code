@@ -44,6 +44,18 @@ public:
         }
     }
 
+    bool has_place_in_pokeballs()
+    {
+        for (auto i = 0u; i < _nb_pokeballs; i++)
+        {
+            if (_pokeballs[i].empty())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 private:
     const std::string     _name;
     PC&                   _pc;
