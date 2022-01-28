@@ -11,7 +11,7 @@ class Trainer;
 class PC
 {
 public:
-    const std::vector<std::unique_ptr<Pokemon>>& pokemons() const { return _pokemons; }
+    const std::vector<std::unique_ptr<Pokemon>>& pokemons() { return _pokemons; }
 
     void receive(std::unique_ptr<Pokemon> ptr) { _pokemons.emplace_back(std::move(ptr)); }
 
