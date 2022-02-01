@@ -12,6 +12,18 @@ Person paul { "Paul", 3 };
 Phone  phone { paul };
 paul.set_position(8);
 ```
+```
+La différence entre un attribut de type `const Person` et un attribut de type `const Person&`
+est que dans le cas `const Person` on va appellé le constructeur par copie à l'instanciation de l'objet Phone:
+  - 2 objets Person construits (vrai même avec la copy-ellision?)
+  - Si l'objet Person viens à changer, Phone est dans un état incorrect car son _owner n'est pas mis à jour
+  - (dans l'exemple `phone._owner` vaudra toujours { "Paul", 3 })
+
+que dans le cas `const Person&` seul la référence est copie (=1 seul objet Person construit):
+  - 1 seul Person construits
+  - Si l'objet Person viens à changer, comme _owner est une référénce, Phone est toujours dans un état correct
+  - (dans l'exemple `phone._owner` vaudra bien { "Paul", 8 })
+```
 
 2. Créez une classe `HomePhone` qui hérite de `Phone`. Ajoutez le nécessaire pour que le code ci-dessous compile.
 ```cpp
@@ -47,6 +59,14 @@ Par quel terme désigne-t-on ce genre d'appel ?
 Comment appelle-t-on les classes sur lesquelles on peut effectuer un appel de ce type ?
 Que faut-il toujours faire lorsqu'on définit ce type de classe et pourquoi ?\
 Si vous n'avez pas pensé à le faire, c'est le moment de vous rattraper.
+
+```
+Ce genre d'appel est un appel virtuel.
+Les classes sur lesquelles on peut effectuer un appel de ce type est une classe polymorphe.
+Lorsque l'on définit ce type de classe il est TRÈS IMPORTANT de redéfinir le destructeur par défaut pour le rendre virtuel.
+Si l'on ne fait pas cela on peut avoir des problèmes de fuite mémoire ( ou autre?) car les destructeurs ne sont pas 'bien' appelée,
+En effet le déstructeur de la classe de la référence sera appelé, ce qui ne détruit pas l'objet réellement crée.
+```
 
 6. Créez une nouvelle classe `MobilePhone`, de manière à pouvoir écrire :
 ```cpp
