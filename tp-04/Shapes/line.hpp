@@ -46,5 +46,13 @@ public:
         return {};
     }
 
+    PointContainer intersect(const Shape& other) const override { return other.intersect(*this); }
+    PointContainer intersect(const Circle& circle) const override { return intersect((Shape&)circle); };
+
+    std::ostream& print(std::ostream& os) const override
+    {
+        return os << "Line {" << first << "," << last << "}";
+    }
+
     ~Line() = default;
 };

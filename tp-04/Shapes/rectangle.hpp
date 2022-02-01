@@ -58,8 +58,18 @@ public:
         {
             result.merge(ls.intersect(other));
         }
+        filter_points_inside(result);
         return result;
     }
 
-    ~Rectangle() = default;
+    PointContainer intersect(const Line& line) const override { return intersect((Shape&)line); }
+
+    std::ostream& print(std::ostream& os) const override
+    {
+        return os << "Rectangle {" << lower_left << "," << upper_right << "}";
+    }
+
+    PointContainer intersect(const Circle& circle) const override { return intersect((Shape&)circle); };
+
+        ~Rectangle() = default;
 };

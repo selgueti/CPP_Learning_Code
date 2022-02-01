@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <iostream>
 
 class Circle : public Shape
 {
@@ -72,6 +73,13 @@ public:
             result.emplace_back(P);
         }
         return result;
+    }
+
+    PointContainer intersect(const Shape& other) const override { return other.intersect(*this); }
+
+    std::ostream& print(std::ostream& os) const override
+    {
+        return os << "Circle {" << center << "," << radius << "}";
     }
 
     ~Circle() = default;
