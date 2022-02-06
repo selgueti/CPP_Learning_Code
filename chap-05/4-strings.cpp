@@ -1,6 +1,6 @@
 #include <iostream>
-
-void print_in_console(const std::string& str)
+#include <string_view>
+void print_in_console(const std::string_view str)
 {
     std::cout << str << std::endl;
 }
