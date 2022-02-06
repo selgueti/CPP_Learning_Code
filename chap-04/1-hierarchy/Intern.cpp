@@ -14,10 +14,9 @@ void Intern::fetch_coffee()
     std::mt19937       gen { rd() };
 
     const auto                  probability = _is_clumsy ? 0.4f : 0.1f;
-    std::bernoulli_distribution dist { probability };
+    std::bernoulli_distribution break_cup_dist { probability };
 
-    // while (1)
-    while (1)
+    while (break_cup_dist(gen))
     {
         const auto break_cup = dist(gen);
         if (break_cup == 0)
